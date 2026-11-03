@@ -113,8 +113,16 @@ public class SpringEntityLeakDetectorTest extends BaseDetectorTest {
 						.build()
 		);
 
-		//Make sure exactly 3 instances are found
-		verify(reporter, times(3)).doReportBug(
+        verify(reporter).doReportBug(
+                bugDefinition()
+                        .bugType("ENTITY_MASS_ASSIGNMENT")
+                        .inClass("SpringEntityLeakController")
+                        .inMethod("api7")
+                        .build()
+        );
+
+		//Make sure exactly 4 instances are found
+		verify(reporter, times(4)).doReportBug(
 				bugDefinition()
 						.bugType("ENTITY_MASS_ASSIGNMENT")
 						.inClass("SpringEntityLeakController")
@@ -147,4 +155,26 @@ public class SpringEntityLeakDetectorTest extends BaseDetectorTest {
 						.build()
 		);
 	}
+
+    @Test
+    public void detectJakartaEntityLeak() throws Exception {
+        //Locate test code
+        String[] files = {
+                getClassFilePath("testcode/spring/JakartaSpringEntityLeakController"),
+                getClassFilePath("testcode/spring/JakartaSampleEntity")
+        };
+
+        //Run the analysis
+        EasyBugReporter reporter = spy(new SecurityReporter());
+        analyze(files, reporter);
+
+        //Assertions
+        verify(reporter).doReportBug(
+                bugDefinition()
+                        .bugType("ENTITY_LEAK")
+                        .inClass("JakartaSpringEntityLeakController")
+                        .inMethod("jakartaApi")
+                        .build()
+        );
+    }
 }

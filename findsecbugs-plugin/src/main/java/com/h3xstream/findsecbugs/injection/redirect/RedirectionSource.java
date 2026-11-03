@@ -35,12 +35,11 @@ public class RedirectionSource implements InjectionSource {
         if (ins instanceof INVOKEINTERFACE) {
             String methodName = ins.getMethodName(cpg);
             String className = ins.getReferenceType(cpg).toString();
-            if (className.equals("javax.servlet.http.HttpServletResponse")
-                    || className.equals("javax.servlet.http.HttpServletResponseWrapper")) {
+            if (isHttpServletResponseOrResponseWrapperClass(className)) {
                 if (methodName.equals("sendRedirect")) {
                     InjectionPoint ip = new InjectionPoint(new int[]{0}, UNVALIDATED_REDIRECT_TYPE);
                     //ip.setInjectableMethod(className.concat(".sendRedirect(...)"));
-                    ip.setInjectableMethod(ins.getSignature(cpg));
+//                    ip.setInjectableMethod(ins.getSignature(cpg));
                     return ip;
                 } else if (methodName.equals("addHeader") || methodName.equals("setHeader")) {
                     LDC ldc = ByteCode.getPrevInstruction(insHandle, LDC.class);
@@ -49,7 +48,7 @@ public class RedirectionSource implements InjectionSource {
                         if (value != null && "Location".equalsIgnoreCase((String) value)) {
                             InjectionPoint ip = new InjectionPoint(new int[]{0}, UNVALIDATED_REDIRECT_TYPE);
                             //ip.setInjectableMethod(className + "." + methodName + "(\"Location\", ...)");
-                            ip.setInjectableMethod(ins.getSignature(cpg));
+//                            ip.setInjectableMethod(ins.getSignature(cpg));
                             return ip;
                         }
                     }
@@ -57,5 +56,12 @@ public class RedirectionSource implements InjectionSource {
             }
         }
         return InjectionPoint.NONE;
+    }
+
+    private boolean isHttpServletResponseOrResponseWrapperClass(String className) {
+        return className.equals("javax.servlet.http.HttpServletResponse") ||
+                className.equals("jakarta.servlet.http.HttpServletResponse") ||
+                className.equals("javax.servlet.http.HttpServletResponseWrapper") ||
+                className.equals("jakarta.servlet.http.HttpServletResponseWrapper");
     }
 }

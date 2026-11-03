@@ -19,18 +19,10 @@ package com.h3xstream.findsecbugs;
 
 import com.h3xstream.findbugs.test.BaseDetectorTest;
 import com.h3xstream.findbugs.test.EasyBugReporter;
-import com.h3xstream.findbugs.test.matcher.BugInstanceMatcher;
-import edu.umd.cs.findbugs.BugInstance;
-import edu.umd.cs.findbugs.BugReporter;
-import edu.umd.cs.findbugs.Priorities;
-import org.mockito.Matchers;
-import org.testng.Assert;
 import org.testng.annotations.Test;
-import testcode.android.R;
 
 import java.util.Arrays;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -115,6 +107,27 @@ public class ReDosDetectorTest extends BaseDetectorTest {
                 bugDefinition()
                         .bugType("REDOS")
                         .inClass("RedosInPatternAnnotation")
+                        .atField("email")
+                        .build()
+        );
+    }
+
+    @Test
+    public void detectJakartaRedosInAnnotation() throws Exception {
+        //Locate test code
+        String[] files = {
+                getClassFilePath("testcode/JakartaRedosInPatternAnnotation.java")
+        };
+
+        //Run the analysis
+        EasyBugReporter reporter = spy(new SecurityReporter());
+        analyze(files, reporter);
+
+        //Field with a Pattern initialize on instantiation
+        verify(reporter).doReportBug(
+                bugDefinition()
+                        .bugType("REDOS")
+                        .inClass("JakartaRedosInPatternAnnotation")
                         .atField("email")
                         .build()
         );

@@ -58,7 +58,7 @@ public class SinksLoader {
             if (line.isEmpty() || line.startsWith("-")) {
                 continue;
             }
-            loadSink(line, bugType,receiver);
+            loadSink(line, bugType, receiver);
         }
     }
 
@@ -97,7 +97,7 @@ public class SinksLoader {
 //            shortName = shortName.substring(0, shortName.indexOf('.'));
 //        }
 //        injectionPoint.setInjectableMethod(shortName.concat("(...)"));
-        injectionPoint.setInjectableMethod(fullMethodName);
+//        injectionPoint.setInjectableMethod(fullMethodName);
         receiver.receiveInjectionPoint(fullMethodName, injectionPoint);
     }
 

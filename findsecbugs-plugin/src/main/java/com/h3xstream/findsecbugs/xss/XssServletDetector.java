@@ -30,21 +30,34 @@ public class XssServletDetector extends BasicInjectionDetector {
 
     private static final String XSS_SERVLET_TYPE = "XSS_SERVLET";
     private static final String[] REQUIRED_CLASSES = {
-        "Ljavax/servlet/http/ServletResponse;",
-        "Ljavax/servlet/http/ServletResponseWrapper;",
+        "Ljavax/servlet/ServletResponse;",
+        "Ljakarta/servlet/ServletResponse;",
+        "Ljavax/servlet/ServletResponseWrapper;",
+        "Ljakarta/servlet/ServletResponseWrapper;",
         "Ljavax/servlet/http/HttpServletResponse;",
+        "Ljakarta/servlet/http/HttpServletResponse;",
         "Ljavax/servlet/http/HttpServletResponseWrapper;",
+        "Ljakarta/servlet/http/HttpServletResponseWrapper;",
         "Lorg/apache/jetspeed/portlet/PortletResponse;",
         "Lorg/apache/jetspeed/portlet/PortletResponseWrapper;",
         "Ljavax/portlet/RenderResponse;",
+        "Ljakarta/portlet/RenderResponse;",
         "Ljavax/portlet/MimeResponse;",
+        "Ljakarta/portlet/MimeResponse;",
         "Ljavax/portlet/filter/RenderResponseWrapper;",
+        "Ljakarta/portlet/filter/RenderResponseWrapper;",
         "Ljavax/portlet/PortletResponse;",
+        "Ljakarta/portlet/PortletResponse;",
         "Ljavax/portlet/ActionResponseWrapper;",
+        "Ljakarta/portlet/ActionResponseWrapper;",
         "Ljavax/portlet/EventResponseWrapper;",
+        "Ljakarta/portlet/EventResponseWrapper;",
         "Ljavax/portlet/PortletResponseWrapper;",
+        "Ljakarta/portlet/PortletResponseWrapper;",
         "Ljavax/portlet/RenderResponseWrapper;",
+        "Ljakarta/portlet/RenderResponseWrapper;",
         "Ljavax/portlet/ResourceResponseWrapper;",
+        "Ljakarta/portlet/ResourceResponseWrapper;",
     };
 
     public XssServletDetector(BugReporter bugReporter) {

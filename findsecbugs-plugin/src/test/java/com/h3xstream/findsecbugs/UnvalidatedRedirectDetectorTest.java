@@ -59,4 +59,39 @@ public class UnvalidatedRedirectDetectorTest extends BaseDetectorTest {
                 bugDefinition().bugType("UNVALIDATED_REDIRECT").build()
         );
     }
+
+    @Test
+    public void detectJakartaUnvalidatedRedirect() throws Exception {
+        //Locate test code
+        String[] files = {
+                getClassFilePath("testcode/JakartaUnvalidatedRedirectServlet")
+        };
+
+        //Run the analysis
+        EasyBugReporter reporter = spy(new SecurityReporter());
+        analyze(files, reporter);
+
+
+        verify(reporter).doReportBug(
+                bugDefinition()
+                        .bugType("UNVALIDATED_REDIRECT")
+                        .inClass("JakartaUnvalidatedRedirectServlet")
+                        .inMethod("unvalidatedRedirect1")
+                        .withPriority("High")
+                        .build()
+        );
+
+        verify(reporter).doReportBug(
+                bugDefinition()
+                        .bugType("UNVALIDATED_REDIRECT")
+                        .inClass("JakartaUnvalidatedRedirectServlet")
+                        .inMethod("unvalidatedRedirect2")
+                        .withPriority("Medium")
+                        .build()
+        );
+
+        verify(reporter, times(2)).doReportBug(
+                bugDefinition().bugType("UNVALIDATED_REDIRECT").inClass("JakartaUnvalidatedRedirectServlet").build()
+        );
+    }
 }

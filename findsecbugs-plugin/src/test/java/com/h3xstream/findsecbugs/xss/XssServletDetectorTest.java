@@ -208,4 +208,54 @@ public class XssServletDetectorTest extends BaseDetectorTest {
 
         verify(reporter, times(3)).doReportBug(bugDefinition().bugType("XSS_SERVLET").build());
     }
+
+    @Test
+    public void detectJakartaXssServlet() throws Exception {
+        // Locate test code
+        String[] files = {
+                getClassFilePath("testcode/xss/servlets/JakartaXssServlet")
+        };
+
+        // Run the analysis
+        EasyBugReporter reporter = spy(new SecurityReporter());
+        analyze(files, reporter);
+
+        verify(reporter).doReportBug(
+                bugDefinition()
+                        .bugType("XSS_SERVLET")
+                        .inClass("JakartaXssServlet")
+                        .inMethod("doGet")
+                        .atLine(16)
+                        .build()
+        );
+
+        verify(reporter).doReportBug(
+                bugDefinition()
+                        .bugType("XSS_SERVLET")
+                        .inClass("JakartaXssServlet")
+                        .inMethod("doGet")
+                        .atLine(18)
+                        .build()
+        );
+
+        verify(reporter).doReportBug(
+                bugDefinition()
+                        .bugType("XSS_SERVLET")
+                        .inClass("JakartaXssServlet")
+                        .inMethod("doGet")
+                        .atLine(19)
+                        .build()
+        );
+
+        verify(reporter).doReportBug(
+                bugDefinition()
+                        .bugType("XSS_SERVLET")
+                        .inClass("JakartaXssServlet")
+                        .inMethod("doGet")
+                        .atLine(21)
+                        .build()
+        );
+
+        verify(reporter, times(4)).doReportBug(bugDefinition().bugType("XSS_SERVLET").build());
+    }
 }
